@@ -2,300 +2,152 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Pharmacy Inventory Computing System</title>
-  <meta name="description" content="CAPP PBL (CCSE0304) — Pharmacy Inventory Computing System with ALU and Control Unit simulators.">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230f766e'/%3E%3Cpath d='M13 7h6v6h6v6h-6v6h-6v-6H7v-6h6z' fill='white'/%3E%3C/svg%3E">
+  <meta name="description" content="Pharmacy inventory with the computer architecture behind every operation. CAPP PBL, Group 91, NIET.">
+  <meta name="theme-color" content="#fafaf9" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0b0b0c" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2318181b'/%3E%3Cpath d='M14 8h4v6h6v4h-6v6h-4v-6H8v-4h6z' fill='white'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-  <header class="topbar">
-    <div class="brand">
-      <span class="logo" aria-hidden="true">✚</span>
-      <div>
-        <h1>Pharmacy Inventory Computing System</h1>
-        <p class="sub">CAPP · CCSE0304 · PBL Group 91 — Progress Review II</p>
-      </div>
+  <header class="bar">
+    <div class="bar-in">
+      <a class="mark" href="#stock" aria-label="Home">
+        <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M8 3h4v5h5v4h-5v5H8v-5H3V8h5z"/></svg>
+        <span>Dispensary</span>
+      </a>
+      <nav class="nav" aria-label="Sections">
+        <a href="#stock" data-view="stock">Stock</a>
+        <a href="#lab" data-view="lab">Lab</a>
+        <a href="#about" data-view="about">About</a>
+      </nav>
+      <button class="icon" id="theme" aria-label="Toggle dark mode">
+        <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3a7 7 0 1 0 0 14V3z"/><circle cx="10" cy="10" r="7" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+      </button>
     </div>
-    <button class="icon-btn" id="themeBtn" title="Toggle dark / light theme" aria-label="Toggle theme">◐</button>
   </header>
 
-  <nav class="tabs" role="tablist">
-    <button role="tab" data-tab="dashboard" class="active">Dashboard</button>
-    <button role="tab" data-tab="inventory">Inventory</button>
-    <button role="tab" data-tab="alu">ALU Lab <small>Unit 2</small></button>
-    <button role="tab" data-tab="cpu">Control Unit Lab <small>Unit 3</small></button>
-    <button role="tab" data-tab="progress">Progress</button>
-  </nav>
-
   <main>
-    <!-- ============================ DASHBOARD ============================ -->
-    <section id="tab-dashboard" class="tab active">
-      <div class="kpis" id="kpis"></div>
-      <div class="grid2">
-        <div class="card">
-          <h2>Alerts</h2>
-          <p class="hint">Raised by AND-masking each medicine's 8-bit status register.</p>
-          <ul class="alerts" id="alerts"></ul>
+    <!-- ================= STOCK ================= -->
+    <section class="view" id="view-stock">
+      <div class="head">
+        <div>
+          <h1>Stock</h1>
+          <p class="lede" id="summary"></p>
         </div>
-        <div class="card">
-          <h2>Stock vs reorder level</h2>
-          <p class="hint">Bar = current units; tick = reorder level. Comparison done by the ALU (SUB → N flag).</p>
-          <div id="stockBars" class="bars"></div>
+        <button class="btn solid" id="add">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 4v12M4 10h12"/></svg>Add medicine
+        </button>
+      </div>
+
+      <div class="tools">
+        <label class="search">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="9" cy="9" r="5.5"/><path d="m13 13 3.5 3.5"/></svg>
+          <input type="search" id="q" placeholder="Search" aria-label="Search medicines">
+        </label>
+        <div class="seg" id="filter" role="tablist" aria-label="Filter">
+          <button data-f="all" class="on">All</button>
+          <button data-f="reorder">Reorder</button>
+          <button data-f="expiry">Expiry</button>
         </div>
       </div>
-      <div class="card">
-        <h2>Recent stock movements</h2>
-        <p class="hint">Every sale is an ALU <code>SUB</code>, every purchase an ALU <code>ADD</code>; flags are recorded.</p>
-        <div class="table-wrap"><table id="txTable"></table></div>
+
+      <div class="list" id="list" role="list"></div>
+    </section>
+
+    <!-- ================= LAB ================= -->
+    <section class="view" id="view-lab">
+      <div class="head">
+        <div>
+          <h1>Lab</h1>
+          <p class="lede">The hardware behind each operation, one concept at a time.</p>
+        </div>
+      </div>
+      <div class="lab">
+        <nav class="topics" id="topics" aria-label="Concepts"></nav>
+        <article class="panel" id="panel"></article>
       </div>
     </section>
 
-    <!-- ============================ INVENTORY ============================ -->
-    <section id="tab-inventory" class="tab">
-      <div class="card">
-        <div class="toolbar">
-          <input type="search" id="search" placeholder="Search medicine, batch, supplier…" aria-label="Search">
-          <div class="mask-filter" id="maskFilter" title="Filter with a bit mask (status AND mask ≠ 0)"></div>
-          <span class="spacer"></span>
-          <button class="btn primary" id="addBtn">+ Add medicine</button>
-          <button class="btn" id="exportBtn">Export</button>
-          <label class="btn">Import<input type="file" id="importFile" accept=".json" hidden></label>
-          <button class="btn ghost" id="resetBtn">Reset sample data</button>
+    <!-- ================= ABOUT ================= -->
+    <section class="view" id="view-about">
+      <div class="head">
+        <div>
+          <h1>About</h1>
+          <p class="lede">Computer Architecture &amp; Parallel Processing (CCSE0304) · PBL Group 91 · NIET Greater Noida</p>
         </div>
-        <p class="hint" id="maskExpr"></p>
-        <div class="table-wrap"><table id="invTable" class="inv"></table></div>
       </div>
-    </section>
+      <div class="about">
+        <div>
+          <p class="prose">A pharmacy inventory system in which every computation runs on simulated hardware. A sale is an ALU subtraction. A low-stock alert is a bit mask. A price is an IEEE 754 word. A stock scan is a program on a small CPU, run one clock at a time.</p>
 
-    <!-- ============================ ALU LAB ============================ -->
-    <section id="tab-alu" class="tab">
-      <div class="card">
-        <h2>Arithmetic &amp; Logic Unit design</h2>
-        <p class="hint">8-bit ALU with function select S2 S1 S0. Example: A = units in stock, B = units sold.</p>
-        <div class="form-row">
-          <label>A <input type="number" id="aluA" value="120" min="0" max="255"></label>
-          <label>B <input type="number" id="aluB" value="30" min="0" max="255"></label>
-        </div>
-        <div class="table-wrap"><table id="aluTable"></table></div>
-      </div>
+          <h2>Progress</h2>
+          <div class="meter"><span style="width:50%"></span></div>
+          <p class="small"><b>50%</b>. Units 1–3 are implemented. Units 4–5 (cache, coherence and parallel systems) come in the final review.</p>
 
-      <div class="grid2">
-        <div class="card">
-          <h2>Division — strips from loose tablets</h2>
-          <p class="hint">Tablets ÷ pack size = strips (quotient) and loose tablets (remainder).</p>
-          <div class="form-row">
-            <label>Dividend Q <input type="number" id="divQ" value="157" min="0" max="255"></label>
-            <label>Divisor M <input type="number" id="divM" value="10" min="1" max="255"></label>
-            <label>Method
-              <select id="divMethod"><option value="restoring">Restoring</option><option value="nonrestoring">Non-restoring</option></select>
-            </label>
-          </div>
-          <div id="divOut"></div>
+          <h2>Syllabus</h2>
+          <dl class="rows" id="syllabus"></dl>
         </div>
-        <div class="card">
-          <h2>Booth's multiplication (signed)</h2>
-          <p class="hint">e.g. stock change (−ve for returns) × units per pack. Range −127…127.</p>
-          <div class="form-row">
-            <label>Multiplicand M <input type="number" id="bM" value="-12" min="-127" max="127"></label>
-            <label>Multiplier Q <input type="number" id="bQ" value="10" min="-127" max="127"></label>
-          </div>
-          <div id="boothOut"></div>
-        </div>
-      </div>
+        <aside>
+          <h2>Team</h2>
+          <ul class="team">
+            <li><span>Utkarsh Raj Shukla</span><code>2501330100398</code></li>
+            <li><span>Vivek Kumar</span><code>2501330100414</code></li>
+            <li><span>Vishal Gupta</span><code>2501330100411</code></li>
+            <li><span>Yash Srivastava</span><code>2501330100422</code></li>
+            <li><span>Nishant Kumar Mahto</span><code>0261DCS009</code></li>
+          </ul>
+          <p class="small">Faculty: Dr. Amrita Bhatnagar<br>SDG 3: Good Health &amp; Well-Being</p>
 
-      <div class="card">
-        <h2>Logic operations on the medicine status register</h2>
-        <p class="hint">Selective set (OR), selective clear (AND with mask'), selective complement (XOR) and mask test (AND).</p>
-        <div class="form-row">
-          <label>Medicine <select id="logicMed"></select></label>
-          <label>Operation
-            <select id="logicOp">
-              <option value="test">Mask test  (R ∧ M)</option>
-              <option value="set">Selective set  (R ∨ M)</option>
-              <option value="clear">Selective clear  (R ∧ M')</option>
-              <option value="complement">Selective complement  (R ⊕ M)</option>
-            </select>
-          </label>
-        </div>
-        <div id="logicMask" class="bitpick"></div>
-        <div id="logicOut"></div>
-      </div>
-
-      <div class="grid2">
-        <div class="card">
-          <h2>IEEE 754 — how a price is stored</h2>
-          <div class="form-row">
-            <label>Value (₹) <input type="text" id="fpVal" value="12.75"></label>
-            <label>Precision
-              <select id="fpPrec"><option value="single">Single (32-bit)</option><option value="double">Double (64-bit)</option></select>
-            </label>
-          </div>
-          <div class="chips" id="fpPresets"></div>
-          <div id="fpOut"></div>
-        </div>
-        <div class="card">
-          <h2>Floating point arithmetic, step by step</h2>
-          <p class="hint">Single precision, round-to-nearest-even — e.g. unit price × quantity = stock value.</p>
-          <div class="form-row">
-            <label>A <input type="text" id="fpA" value="6.4"></label>
-            <label>Op
-              <select id="fpOp"><option value="mul">×</option><option value="add">+</option><option value="sub">−</option><option value="div">÷</option></select>
-            </label>
-            <label>B <input type="text" id="fpB" value="36"></label>
-          </div>
-          <div id="fpArithOut"></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============================ CONTROL UNIT LAB ============================ -->
-    <section id="tab-cpu" class="tab">
-      <div class="card">
-        <h2>PharmaCPU — instruction set &amp; formats</h2>
-        <p class="hint">16-bit instructions, 4-bit opcode, 8 registers, 512-word memory. Inventory records live at <code>0x100</code>.</p>
-        <div class="grid2 tight">
-          <div class="table-wrap"><table id="isaTable" class="compact"></table></div>
-          <div id="formats"></div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="toolbar">
-          <h2 class="grow">Instruction cycle simulator</h2>
-          <label>Program <select id="progSel"></select></label>
-          <label>Control <select id="ctlSel"><option value="hard">Hardwired</option><option value="micro">Microprogrammed</option></select></label>
-        </div>
-        <p class="hint" id="progAbout"></p>
-        <div class="sim">
-          <div>
-            <textarea id="asm" spellcheck="false" aria-label="Assembly source"></textarea>
-            <div class="toolbar">
-              <button class="btn primary" id="asmBtn">Assemble &amp; load</button>
-              <button class="btn" id="tickBtn" title="One clock: one micro-operation step">Clock ▸</button>
-              <button class="btn" id="instrBtn" title="Complete one instruction cycle">Instruction ▸▸</button>
-              <button class="btn" id="runBtn">Run ▶</button>
-            </div>
-            <p class="err" id="asmErr"></p>
-            <div class="table-wrap short"><table id="codeTable" class="compact mono"></table></div>
-          </div>
-          <div>
-            <div id="regs" class="regs"></div>
-            <div id="ctlView"></div>
-            <h3>Micro-operation log</h3>
-            <div class="table-wrap short"><table id="uopLog" class="compact mono"></table></div>
-          </div>
-        </div>
-        <h3>Memory: inventory records (0x100…)</h3>
-        <div class="table-wrap"><table id="memTable" class="compact mono"></table></div>
-      </div>
-
-      <div class="card">
-        <h2>Horizontal vs vertical microprogramming</h2>
-        <p class="hint" id="microHint"></p>
-        <div class="table-wrap"><table id="cmTable" class="compact mono"></table></div>
-      </div>
-
-      <div class="card">
-        <div class="toolbar">
-          <h2 class="grow">Pipelining — 5-stage timing diagram</h2>
-          <label><input type="checkbox" id="fwd" checked> Operand forwarding</label>
-          <label>Show first <input type="number" id="pipeN" value="16" min="4" max="60"> instructions</label>
-        </div>
-        <div id="pipeStats" class="kpis small"></div>
-        <div class="table-wrap"><table id="pipeTable" class="pipe mono"></table></div>
-      </div>
-
-      <div class="grid2">
-        <div class="card">
-          <h2>RISC vs CISC — recording sales</h2>
-          <div class="form-row">
-            <label>Sales transactions <input type="number" id="rcN" value="100" min="1" max="100000"></label>
-          </div>
-          <div id="riscCisc"></div>
-        </div>
-        <div class="card">
-          <h2>Flynn's classification — expiry scan</h2>
-          <div class="form-row">
-            <label>SIMD lanes
-              <select id="lanes"><option>2</option><option selected>4</option><option>8</option></select>
-            </label>
-            <button class="btn" id="sisdBtn">Run SISD</button>
-            <button class="btn primary" id="simdBtn">Run SIMD</button>
-          </div>
-          <div id="flynnGrid" class="lanes"></div>
-          <p id="flynnStat" class="hint"></p>
-          <div class="table-wrap"><table id="flynnTable" class="compact"></table></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============================ PROGRESS ============================ -->
-    <section id="tab-progress" class="tab">
-      <div class="card">
-        <h2>Project progress — Review II</h2>
-        <div class="progress"><div style="width:50%"></div><span>50%</span></div>
-        <p class="hint">Month 1 (25%): problem, objectives, research, Unit 1 &amp; 2 study. Month 2 (+25%): remaining Unit 2 + Unit 3 implemented in this web app.</p>
-        <div class="table-wrap"><table id="syllabus"></table></div>
-      </div>
-      <div class="card">
-        <h2>Evidence &amp; supporting material</h2>
-        <ul class="evidence">
-          <li><b>Source code:</b> <a href="https://github.com/utk042/CAPP-PBL" target="_blank" rel="noopener">github.com/utk042/CAPP-PBL</a></li>
-          <li><b>Live web app:</b> <a href="https://utk042.github.io/CAPP-PBL/" target="_blank" rel="noopener">utk042.github.io/CAPP-PBL</a> (GitHub Pages)</li>
-          <li><b>Class notes &amp; lecture PPTs</b> (Units 2 &amp; 3) — division algorithms, IEEE 754, instruction cycle, micro-operations, hardwired vs microprogrammed control, pipelining, Flynn's taxonomy.</li>
-          <li><b>Reference texts:</b> M. Morris Mano, <i>Computer System Architecture</i>; W. Stallings, <i>Computer Organization and Architecture</i>; Hamacher, <i>Computer Organization</i>.</li>
-          <li><b>Automated self-checks:</b> <code>node tests/run.js</code> — verifies the ALU, Booth, division, IEEE 754 arithmetic (against hardware) and the CPU programs.</li>
-          <li><b>Progress reports:</b> <code>reports/</code> folder of the repository.</li>
-        </ul>
+          <h2>Links</h2>
+          <ul class="links">
+            <li><a href="https://github.com/utk042/CAPP-PBL" target="_blank" rel="noopener">Source code ↗</a></li>
+            <li><a href="https://github.com/utk042/CAPP-PBL/tree/claude/capp-syllabus-completion-h5zlb3/reports" target="_blank" rel="noopener">Progress reports ↗</a></li>
+          </ul>
+          <h2>References</h2>
+          <p class="small">Class notes and lecture slides, Units 1–3 · Mano, <i>Computer System Architecture</i> · Stallings, <i>Computer Organization and Architecture</i> · Hamacher, <i>Computer Organization</i> · IEEE 754-2019</p>
+        </aside>
       </div>
     </section>
   </main>
 
-  <dialog id="medDialog">
-    <form method="dialog" id="medForm">
-      <h2 id="medTitle">Add medicine</h2>
-      <div class="form-grid">
-        <label>Name <input name="name" required></label>
-        <label>Category <input name="category"></label>
-        <label>Batch <input name="batch"></label>
-        <label>Supplier <input name="supplier"></label>
-        <label>Quantity (units) <input name="qty" type="number" min="0" max="65535" required></label>
-        <label>Units per pack <input name="packSize" type="number" min="1" max="255" required></label>
-        <label>Reorder level <input name="reorder" type="number" min="0" max="65535" required></label>
-        <label>Unit price (₹) <input name="price" type="number" min="0" step="0.01" required></label>
-        <label>Expiry date <input name="expiry" type="date" required></label>
+  <!-- medicine detail sheet -->
+  <dialog class="sheet" id="sheet" aria-labelledby="sheetTitle">
+    <div class="sheet-in" id="sheetBody"></div>
+  </dialog>
+
+  <!-- add / edit form -->
+  <dialog class="sheet" id="editor" aria-labelledby="edTitle">
+    <form class="sheet-in" id="edForm" method="dialog">
+      <div class="sheet-head">
+        <h2 id="edTitle">Add medicine</h2>
+        <button class="icon" value="cancel" formnovalidate aria-label="Close"><svg viewBox="0 0 20 20"><path d="m5 5 10 10M15 5 5 15"/></svg></button>
+      </div>
+      <div class="fields">
+        <label class="wide">Name<input name="name" required autocomplete="off"></label>
+        <label>Category<input name="category"></label>
+        <label>Batch<input name="batch"></label>
+        <label class="wide">Supplier<input name="supplier"></label>
+        <label>Units<input name="qty" type="number" min="0" max="65535" required></label>
+        <label>Units per pack<input name="packSize" type="number" min="1" max="255" required></label>
+        <label>Reorder level<input name="reorder" type="number" min="0" max="65535" required></label>
+        <label>Unit price (₹)<input name="price" type="number" min="0" step="0.01" required></label>
+        <label class="wide">Expiry<input name="expiry" type="date" required></label>
         <label class="check"><input name="rx" type="checkbox"> Prescription only</label>
         <label class="check"><input name="cold" type="checkbox"> Cold storage</label>
       </div>
-      <div class="toolbar end">
-        <button class="btn ghost" value="cancel" formnovalidate>Cancel</button>
-        <button class="btn primary" value="save">Save</button>
+      <div class="sheet-foot">
+        <button class="btn" value="cancel" formnovalidate>Cancel</button>
+        <button class="btn solid" value="save">Save</button>
       </div>
     </form>
   </dialog>
 
-  <dialog id="moveDialog">
-    <form method="dialog" id="moveForm">
-      <h2 id="moveTitle">Stock movement</h2>
-      <div class="form-row">
-        <label>Type <select name="kind"><option value="sale">Sale (ALU SUB)</option><option value="purchase">Purchase (ALU ADD)</option></select></label>
-        <label>Units <input name="units" type="number" min="1" max="65535" value="10" required></label>
-      </div>
-      <p class="err" id="moveErr"></p>
-      <div class="toolbar end">
-        <button class="btn ghost" value="cancel" formnovalidate>Cancel</button>
-        <button class="btn primary" value="save">Apply</button>
-      </div>
-    </form>
-  </dialog>
-
-  <div id="toast" role="status" aria-live="polite"></div>
-
-  <footer>
-    Group 91: Utkarsh Raj Shukla, Vivek Kumar, Vishal Gupta, Yash Srivastava, Nishant Kumar Mahto · B.Tech CSE-F · NIET ·
-    <a href="https://github.com/utk042/CAPP-PBL" target="_blank" rel="noopener">Source on GitHub</a>
-  </footer>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script src="assets/js/alu.js"></script>
   <script src="assets/js/cpu.js"></script>

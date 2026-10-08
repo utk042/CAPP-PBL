@@ -9,13 +9,12 @@ The app manages a pharmacy's medicines: stock, reorder levels, expiry dates, sal
 
 ## Features
 
-| Tab | What it does | Syllabus |
+| View | What it does | Syllabus |
 |---|---|---|
-| Dashboard | Stock KPIs, alerts and a stock vs reorder chart. The total stock value is computed in float32. | Unit 2 |
-| Inventory | Add, edit and delete medicines. Each sale is an ALU `SUB` and each purchase an ALU `ADD`, with the flags recorded. Shows packs + loose tablets (division) and lets you filter with a bit mask on an 8-bit status register. Supports import and export as JSON. | Unit 2 |
-| ALU Lab | 8-bit ALU (S2 S1 S0, C/Z/N/V flags), restoring and non-restoring division, Booth's algorithm, logic operations (selective set, clear and complement, mask test), IEEE 754 single and double encoding, and step-by-step FP add/sub/mul/div | Unit 2 |
-| Control Unit Lab | PharmaCPU ISA (instruction types, 5 formats, addressing modes), assembler, clock-by-clock fetch/decode/execute with micro-operations, hardwired vs microprogrammed control, horizontal vs vertical microcode, a 5-stage pipeline diagram with hazards and forwarding, RISC vs CISC, and Flynn's classification (SISD vs SIMD) | Unit 3 |
-| Progress | Syllabus coverage (50%) and evidence | — |
+| Stock | Medicine list with search and filters. Click a medicine to sell or restock it. Each sale is an ALU `SUB` (a borrow blocks overselling) and each restock an ALU `ADD`. The detail sheet shows the hardware behind each value: the 8-bit status register, packs by restoring division, the IEEE 754 price and the float32 stock value. | Units 1–2 |
+| Lab · Unit 2 | ALU design with flags, restoring and non-restoring division, Booth's multiplication, IEEE 754 representation, and step-by-step floating point arithmetic | Unit 2 |
+| Lab · Unit 3 | Instruction set and formats; a clock-by-clock instruction cycle running inventory programs; hardwired vs microprogrammed control (horizontal and vertical microcode); 5-stage pipelining with hazards and forwarding; RISC vs CISC; Flynn's taxonomy (SISD vs SIMD) | Unit 3 |
+| About | Project summary, team, 50% progress and syllabus coverage | — |
 
 ## Run locally
 
