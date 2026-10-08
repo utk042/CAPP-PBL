@@ -14,7 +14,7 @@ The app manages a pharmacy's medicines: stock, reorder levels, expiry dates, sal
 | Stock | Medicine list with search and filters. Click a medicine to sell or restock it. Each sale is an ALU `SUB` (a borrow blocks overselling) and each restock an ALU `ADD`. The detail sheet shows the hardware behind each value: the 8-bit status register, packs by restoring division, the IEEE 754 price and the float32 stock value. | Units 1–2 |
 | Lab · Unit 2 | ALU design with flags, restoring and non-restoring division, Booth's multiplication, IEEE 754 representation, and step-by-step floating point arithmetic | Unit 2 |
 | Lab · Unit 3 | Instruction set and formats; a clock-by-clock instruction cycle running inventory programs; hardwired vs microprogrammed control (horizontal and vertical microcode); 5-stage pipelining with hazards and forwarding; RISC vs CISC; Flynn's taxonomy (SISD vs SIMD) | Unit 3 |
-| About | Project summary, team, 50% progress and syllabus coverage | — |
+| About | Project summary, team, 60% progress and syllabus coverage | — |
 
 ## Run locally
 
