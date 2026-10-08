@@ -1,6 +1,6 @@
 # Pharmacy Inventory Computing System
 
-PBL project for **Computer Architecture & Parallel Processing (CAPP, CCSE0304)**, B.Tech CSE-F, NIET. Group 91, Utkarsh Raj Shukla. Faculty: Dr. Amrita Bhatnagar. SDG 3: Good Health & Well-Being.
+PBL project for **Computer Architecture & Parallel Processing (CAPP, CCSE0304)**, B.Tech CSE-F, NIET. Group 91: Utkarsh Raj Shukla (2501330100398), Vivek Kumar (2501330100414), Vishal Gupta (2501330100411), Yash Srivastava (2501330100422) and Nishant Kumar Mahto (0261DCS009). Faculty: Dr. Amrita Bhatnagar. SDG 3: Good Health & Well-Being.
 
 **Live web app:** https://utk042.github.io/CAPP-PBL/
 **Repository:** https://github.com/utk042/CAPP-PBL
